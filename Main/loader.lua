@@ -27,3 +27,5 @@ end
 
 -- Run forest logic
 forestModule:Init(gui)
+print("GUI loaded")
+print("Forest module initialized")
