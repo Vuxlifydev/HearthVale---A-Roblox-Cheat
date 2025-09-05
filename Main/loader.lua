@@ -1,14 +1,29 @@
--- 🌲 Hearthvale Loader | Developed by Vuxlifydev
-local placeMap = {
-    [79546208627805] = "forest" -- 99 Nights in the Forest
-}
+-- Loader for Hearthvale GUI (99 Nights in the Forest)
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
 
-local branch = placeMap[game.PlaceId] or "main"
+local player = Players.LocalPlayer
+repeat task.wait() until player and player:FindFirstChild("PlayerGui")
+
+-- Load GUI module from GitHub
+local guiURL = "https://raw.githubusercontent.com/Vuxlifydev/HearthVale---A-Roblox-Cheat/main/gui.lua"
+local guiSource = HttpService:GetAsync(guiURL)
+local guiModule = loadstring(guiSource)()
 
 -- Load game-specific module
-local gameURL = "https://raw.githubusercontent.com/Vuxlifydev/Hearthvale/" .. branch .. "/game.lua"
-loadstring(game:HttpGet(gameURL, true))()
+local forestURL = "https://raw.githubusercontent.com/Vuxlifydev/HearthVale---A-Roblox-Cheat/main/forest/game.lua"
+local forestSource = HttpService:GetAsync(forestURL)
+local forestModule = loadstring(forestSource)()
 
--- Load GUI
-local guiURL = "https://raw.githubusercontent.com/Vuxlifydev/Hearthvale/main/gui.lua"
-loadstring(game:HttpGet(guiURL, true))()
+-- Create and show GUI
+local gui = guiModule:Create() -- Assuming your gui.lua returns a Create() function
+gui.Parent = player:WaitForChild("PlayerGui")
+gui.Enabled = true
+
+-- Optional: force visibility on main frame
+if gui:FindFirstChild("MainFrame") then
+    gui.MainFrame.Visible = true
+end
+
+-- Run forest logic
+forestModule:Init(gui)
