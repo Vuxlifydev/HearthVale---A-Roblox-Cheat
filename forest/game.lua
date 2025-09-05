@@ -1,4 +1,21 @@
-local plr = game:GetService("Players").LocalPlayer
-shared.LoreTags = shared.LoreTags or {}
-shared.LoreTags[plr] = "<font color='rgb(0,255,127)'>[ForestWarden]</font> "
-plr:SetAttribute("CanSummon", true)
+-- 🌲 Hearthvale Forest Module
+local rs = game:GetService("ReplicatedStorage").Events
+
+-- Auto Fire
+_G.fireLoop = true
+task.spawn(function()
+    while _G.fireLoop do
+        rs.AddLog:FireServer()
+        task.wait(0.1)
+    end
+end)
+
+-- Auto Carrot
+_G.carrotLoop = true
+task.spawn(function()
+    while _G.carrotLoop do
+        rs.AddCarrot:FireServer()
+        rs.EatCarrot:FireServer()
+        task.wait(0.2)
+    end
+end)
